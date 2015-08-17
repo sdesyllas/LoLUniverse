@@ -1,0 +1,28 @@
+﻿@using LoLUniverse.Helpers
+@using RiotApi.Net.RestClient.Configuration
+@model LoLUniverse.Models.Search.SearchSummoner
+
+
+@using (Html.BeginForm("SummonerResults", "Search", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Get, new {@class = "form-inline", role = "form"}))
+{
+    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.SummonerName, new {@class = "sr-only"})
+        @Html.TextBoxFor(m => m.SummonerName, new {@class = "form-control", placeholder = Html.DisplayNameFor(m => m.SummonerName)})
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Region, new {@class = "sr-only"})
+        @Html.DropDownList("Region", RegionHelper.SummonerRegions, "Region", new {@class = "form-control"})
+
+    </div>
+    <input type="submit" value="Search" class="btn btn-default"/>
+    <div class="form-group">
+        @Html.ValidationMessageFor(m => m.SummonerName, "", new {@class = "text-danger"})
+    </div>
+    <div class="form-group">
+        @Html.ValidationMessageFor(m => m.Region, "", new {@class = "text-danger"})
+
+    </div>
+}
+
