@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using LoLUniverse.Models;
+using LoLUniverse.Utilities;
 
 namespace LoLUniverse
 {
@@ -18,6 +19,7 @@ namespace LoLUniverse
     {
         public Task SendAsync(IdentityMessage message)
         {
+            EmailSender.SendEmail(message.Destination, message.Body, message.Subject);
             // Plug in your email service here to send an email.
             return Task.FromResult(0);
         }
@@ -54,10 +56,10 @@ namespace LoLUniverse
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
+                RequireNonLetterOrDigit = false,
                 RequireDigit = true,
                 RequireLowercase = true,
-                RequireUppercase = true,
+                RequireUppercase = false,
             };
 
             // Configure user lockout defaults
@@ -67,10 +69,11 @@ namespace LoLUniverse
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
+            /*
             manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
             {
                 MessageFormat = "Your security code is {0}"
-            });
+            });*/
             manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
             {
                 Subject = "Security Code",
@@ -81,8 +84,8 @@ namespace LoLUniverse
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                manager.UserTokenProvider =
+                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity")) { TokenLifespan = TimeSpan.FromHours(3) };
             }
             return manager;
         }

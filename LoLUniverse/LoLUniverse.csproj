@@ -18,7 +18,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -194,6 +194,7 @@
     <Compile Include="Models\Search\SearchSummoner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utilities\EmailSender.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Assets\Images\logo.png" />
@@ -254,6 +255,7 @@
     <Content Include="Views\Shared\_LogoArea.cshtml" />
     <Content Include="Views\Search\SearchBox.cshtml" />
     <Content Include="Views\Search\SummonerResults.cshtml" />
+    <Content Include="Views\Account\WaitingForEmailConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

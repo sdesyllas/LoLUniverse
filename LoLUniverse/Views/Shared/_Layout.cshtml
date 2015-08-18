@@ -31,7 +31,8 @@
         </div>
     </div>
 <div class="container body-content">
-    @Html.Partial("_LogoArea")
+    
+    @Html.Partial("_LogoArea", new LoLUniverse.Models.Search.SearchSummoner())
     
     @RenderBody()
     <hr/>
