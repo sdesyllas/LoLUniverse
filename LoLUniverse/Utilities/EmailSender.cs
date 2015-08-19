@@ -12,7 +12,8 @@ namespace LoLUniverse.Utilities
 
         public static bool SendEmail(string recipient, string subject, string body)
         {
-            try {
+            try
+            {
                 MailMessage msg = new MailMessage();
                 msg.From = new MailAddress(ConfigurationManager.AppSettings["appEmail"]);
                 msg.To.Add(new MailAddress(recipient));
@@ -26,7 +27,7 @@ namespace LoLUniverse.Utilities
                 }
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 logger.Error(e);
                 return false;
