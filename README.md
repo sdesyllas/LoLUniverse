@@ -7,8 +7,8 @@ This is a web application open source project created with ASP.NET MVC that util
 framework and it is using advanced mechanics of caching, NoSQL performance solution and user account system.
 
 # Technologies and Libraries used
+* [RiotApi.Net](https://github.com/sdesyllas/RiotApi.NET)
 * [Redis Key-Value storage Solution](http://redis.io/)
 * [RavenDB NoSQL Database](http://ravendb.net/)
-* [RiotApi.Net](https://github.com/sdesyllas/RiotApi.NET)
 
 <img src="http://ravendb.net/content/images/ravenMoon.png" alt="powered by RavenDB" width="85" height="85"/>
