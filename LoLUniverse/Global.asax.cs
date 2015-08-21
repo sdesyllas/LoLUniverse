@@ -12,6 +12,7 @@ namespace LoLUniverse
     public class MvcApplication : System.Web.HttpApplication
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();

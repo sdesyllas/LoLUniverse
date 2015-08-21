@@ -47,8 +47,8 @@
       <HintPath>..\packages\NLog.4.0.1\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RiotApi.Net.RestClient, Version=1.2.2.19347, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RiotApi.NET.1.2.2\lib\net452\RiotApi.Net.RestClient.dll</HintPath>
+    <Reference Include="RiotApi.Net.RestClient">
+      <HintPath>..\packages\RiotApi.NET.1.3.1\lib\net452\RiotApi.Net.RestClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

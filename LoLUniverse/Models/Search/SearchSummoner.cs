@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using RiotApi.Net.RestClient.Configuration;
+using RiotApi.Net.RestClient.Dto.Summoner;
 
 namespace LoLUniverse.Models.Search
 {
@@ -12,5 +14,8 @@ namespace LoLUniverse.Models.Search
         [Required]
         [Display(Name = "Region")]
         public RiotApiConfig.Regions Region { get; set; }
+
+        public List<SummonerModel> SummonerModels { get; set; } 
+
     }
 }

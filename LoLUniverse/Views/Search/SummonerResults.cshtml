@@ -4,5 +4,43 @@
     ViewBag.Title = "title";
 }
 
-<h2>title</h2>
-@Html.DisplayTextFor(m=>m.SummonerName)
+<h2>@Html.DisplayTextFor(m => m.SummonerName)</h2>
+
+
+@{
+    foreach (var summoner in Model.SummonerModels)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <h2>@summoner.SummonerDto.Name</h2>
+                <p>
+                    <img src="@summoner.ProfileImagePath" alt="@summoner.SummonerDto.Name"/>
+                </p>
+                <p>
+                    <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a>
+                </p>
+            </div>
+            <div class="col-md-4">
+                <h2>@summoner.SummonerDto.SummonerLevel</h2>
+                <p>Summoner Level</p>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var leagueModel in summoner.LeagueModels)
+            {
+                <div class="col-md-4">
+                    <h2>@leagueModel.LeagueName</h2>
+                    <p>team : @leagueModel.LeagueDto.Name</p>
+                    <p>
+                        <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a>
+                    </p>
+
+                </div>
+            }
+        </div>
+    }
+}
+
