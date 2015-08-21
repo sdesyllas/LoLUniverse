@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using LoLUniverse;
 using LoLUniverse.Controllers;
+using LoLUniverse.Models;
 
 namespace LoLUniverse.Tests.Controllers
 {

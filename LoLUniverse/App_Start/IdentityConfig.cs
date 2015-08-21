@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -12,6 +14,9 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using LoLUniverse.Models;
 using LoLUniverse.Utilities;
+using NLog;
+using NLog.Fluent;
+using Twilio;
 
 namespace LoLUniverse
 {
@@ -27,9 +32,23 @@ namespace LoLUniverse
 
     public class SmsService : IIdentityMessageService
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your SMS service here to send a text message.
+            var Twilio = new TwilioRestClient(
+               ConfigurationManager.AppSettings["TwilioSid"],
+               ConfigurationManager.AppSettings["TwilioToken"]
+           );
+            var result = Twilio.SendMessage(
+                ConfigurationManager.AppSettings["TwilioFromPhone"],
+               message.Destination, message.Body);
+
+            // Status is one of Queued, Sending, Sent, Failed or null if the number is not valid
+            Trace.TraceInformation(result.Status);
+            logger.Debug($"Message send to {message.Destination} : {result.Status}");
+
+            // Twilio doesn't currently have an async API, so return success.
             return Task.FromResult(0);
         }
     }
@@ -69,11 +88,11 @@ namespace LoLUniverse
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
-            /*
+
             manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
             {
                 MessageFormat = "Your security code is {0}"
-            });*/
+            });
             manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
             {
                 Subject = "Security Code",

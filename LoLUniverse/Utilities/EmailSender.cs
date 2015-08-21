@@ -24,6 +24,7 @@ namespace LoLUniverse.Utilities
                 using (SmtpClient smtpClient = new SmtpClient())
                 {
                     smtpClient.Send(msg);
+                    logger.Debug($"Email send to {recipient} subject : {subject}");
                 }
                 return true;
             }

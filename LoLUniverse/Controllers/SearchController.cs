@@ -62,11 +62,10 @@ namespace LoLUniverse.Controllers
                 logger.Debug($"Summoner.GetSummonersByName({searchSummoner.Region}, {searchSummoner.SummonerName}) - {exception.RiotErrorCode}");
                 if (exception.RiotErrorCode == RiotExceptionRaiser.RiotErrorCode.DATA_NOT_FOUND)
                 {
-                    Response.StatusCode = 404;
                     return new HttpNotFoundResult("Summoner not found");
                 }
+                throw;
             }
-            return View(searchSummoner);
         }
 
         public void PrepareSearchSummonerModel(SearchSummoner searchSummoner, Dictionary<string, SummonerDto> summonersDto, Dictionary<string, IEnumerable<LeagueDto>> summonerLeagues)

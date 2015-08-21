@@ -4,8 +4,6 @@
 
 @using (Html.BeginForm("SummonerResults", "Search", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Get, new {@class = "form-inline", role = "form"}))
 {
-    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
-
     <div class="form-group">
         @Html.LabelFor(m => m.SummonerName, new {@class = "sr-only"})
         @Html.TextBoxFor(m => m.SummonerName, new {@class = "form-control", placeholder = Html.DisplayNameFor(m => m.SummonerName)})
