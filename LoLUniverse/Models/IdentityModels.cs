@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -27,6 +28,9 @@ namespace LoLUniverse.Models
 
         public static ApplicationDbContext Create()
         {
+            var migratorConfig = new Migrations.Configuration();
+            var dbMigrator = new DbMigrator(migratorConfig);
+            dbMigrator.Update();
             return new ApplicationDbContext();
         }
     }
