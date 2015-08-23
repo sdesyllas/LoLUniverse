@@ -20,12 +20,12 @@ namespace LoLUniverse.Controllers
             logger.Debug("/api/news");
             using (var session = RavenContext.CreateSession())
             {
-                IList<NewsModel> news =
-                    session.Query<NewsModel>()
+                List<NewsModel> news =
+                    session.Query<NewsModel>().Where(x=> x.CreatedDate <= DateTime.Now)
                         .Take(10)
                         .OrderByDescending(x => x.CreatedDate)
                         .ToList();
-
+                news.ForEach(x => x.Content = System.Net.WebUtility.HtmlDecode(x.Content));
                 return news;
             }
         }
@@ -36,13 +36,13 @@ namespace LoLUniverse.Controllers
             logger.Debug("/api/news");
             using (var session = RavenContext.CreateSession())
             {
-                NewsModel newmodel = session.Query<NewsModel>().FirstOrDefault(x => x.NewsId == id);
+                NewsModel newmodel = session.Query<NewsModel>().FirstOrDefault(x => x.Id == id);
                 return newmodel;
 
             }
         }
 
-        [System.Web.Http.HttpPost]
+        [System.Web.Mvc.HttpPost]
         public void CreateNewEntry(NewsModel newsModel)
         {
             using (var session = RavenContext.CreateSession())

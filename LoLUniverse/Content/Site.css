@@ -26,3 +26,8 @@ textarea {
 .searchBox {
     padding-top: 50px;
 }
+
+.redAdminText a{
+    color: #ff0000 !important;
+    font-weight: bold;
+}

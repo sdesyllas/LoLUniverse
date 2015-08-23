@@ -9,12 +9,7 @@ namespace LoLUniverse.Models
 {
     public class NewsModel
     {
-        private NewsModel()
-        {
-            
-        }
-
-        public int NewsId { get; set; }
+        public int Id { get; set; }
 
         [Required]
         [Display(Name = "Title")]
@@ -25,7 +20,17 @@ namespace LoLUniverse.Models
         public string Description { get; set; }
 
         [Required]
+        [Url]
+        [Display(Name = "Landing Page")]
+        public string LandingPageUrl { get; set; }
+
+        [Required]
         [Display(Name = "Created on")]
         public DateTime CreatedDate { get; set; }
+
+        [Required]
+        [Display(Name = "Content")]
+        [DataType(DataType.MultilineText)]
+        public string Content { get; set; }
     }
 }

@@ -25,6 +25,11 @@ namespace LoLUniverse.Controllers
             return View();
         }
 
+        public ActionResult NewDetails(int id)
+        {
+            return View(id);
+        }
+
         public ActionResult SendContactMessage(ContactModel contactModel)
         {
             string userResponse = HttpContext.Request.Params["g-recaptcha-response"];
