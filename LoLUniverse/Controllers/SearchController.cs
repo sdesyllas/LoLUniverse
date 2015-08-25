@@ -21,7 +21,7 @@ namespace LoLUniverse.Controllers
         private static readonly string AllStaticChampionsByRegionKey = "AllStaticChampions_{0}";
         private static readonly string SummonerByRegionAndNameCacheKey = "Summoner_{0}_{1}";
         private static readonly string SummonerLeagueByRegionAndIdCacheKey = "SummonerLeagues_{0}_{1}";
-        private static readonly string SummonerRecentGamesbyRegionAndIdCacheKey = "SummoneRecentGames_{0}_{1}";
+        private static readonly string SummonerRecentGamesbyRegionAndIdCacheKey = "SummonerRecentGames_{0}_{1}";
         private static readonly string PlayerStatsByRegionAndIdCacheKey = "PlayerStats_{0}_{1}";
         private static readonly string PlayerRankedStatsByRegionAndIdCacheKey = "PlayerRankedStats_{0}_{1}";
         private static readonly string DataDragonVersionByRegionKey = "DataDragonVersions_{0}";
