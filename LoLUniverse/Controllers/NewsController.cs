@@ -6,8 +6,9 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 using LoLUniverse.Models;
-using LoLUniverse.NoSqlContext;
 using NLog;
+using Raven.Client;
+using Ninject;
 
 namespace LoLUniverse.Controllers
 {
@@ -15,10 +16,13 @@ namespace LoLUniverse.Controllers
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        [Inject]
+        public IDocumentStore DocumentStore { get; set; }
+
         public IEnumerable<NewsModel> GetLatestNews()
         {
             logger.Debug("/api/news");
-            using (var session = RavenContext.CreateSession())
+            using (var session = DocumentStore.OpenSession())
             {
                 List<NewsModel> news =
                     session.Query<NewsModel>().Where(x=> x.CreatedDate <= DateTime.Now)
@@ -34,7 +38,7 @@ namespace LoLUniverse.Controllers
         public NewsModel GetNewEntryById(int id)
         {
             logger.Debug("/api/news");
-            using (var session = RavenContext.CreateSession())
+            using (var session = DocumentStore.OpenSession())
             {
                 NewsModel newmodel = session.Query<NewsModel>().FirstOrDefault(x => x.Id == id);
                 return newmodel;
@@ -45,7 +49,7 @@ namespace LoLUniverse.Controllers
         [System.Web.Mvc.HttpPost]
         public void CreateNewEntry(NewsModel newsModel)
         {
-            using (var session = RavenContext.CreateSession())
+            using (var session = DocumentStore.OpenSession())
             {
                 session.Store(newsModel);
                 session.SaveChanges(); // sends all changes to server

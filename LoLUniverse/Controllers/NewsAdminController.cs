@@ -4,8 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using LoLUniverse.Models;
-using LoLUniverse.NoSqlContext;
 using NLog;
+using Raven.Client;
+using Ninject;
 
 namespace LoLUniverse.Controllers
 {
@@ -14,10 +15,12 @@ namespace LoLUniverse.Controllers
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        [Inject]
+        public IDocumentStore DocumentStore { get; set; }
         // GET: NewsAdmin
         public ActionResult Index()
         {
-            using (var session = RavenContext.CreateSession())
+            using (var session = DocumentStore.OpenSession())
             {
                 IList<NewsModel> news = session.Query<NewsModel>().OrderByDescending(x => x.CreatedDate).ToList();
                 return View(news);
@@ -27,7 +30,7 @@ namespace LoLUniverse.Controllers
         // GET: NewsAdmin/Details/5
         public ActionResult Details(int id)
         {
-            using (var session = RavenContext.CreateSession())
+            using (var session = DocumentStore.OpenSession())
             {
                 NewsModel newModel = session.Load<NewsModel>(id);
                 return View(newModel);
@@ -46,7 +49,7 @@ namespace LoLUniverse.Controllers
         {
             try
             {
-                using (var session = RavenContext.CreateSession())
+                using (var session = DocumentStore.OpenSession())
                 {
                     session.Store(newsModel);
                     session.SaveChanges();
@@ -63,7 +66,7 @@ namespace LoLUniverse.Controllers
         public ActionResult Edit(int id)
         {
 
-            using (var session = RavenContext.CreateSession())
+            using (var session = DocumentStore.OpenSession())
             {
                 NewsModel newModel = session.Load<NewsModel>(id);
                 // use System.Net.WebUtility.HtmlDecode() to store unencoded HTML
@@ -81,7 +84,7 @@ namespace LoLUniverse.Controllers
             try
             {
                 // TODO: Add update logic here
-                using (var session = RavenContext.CreateSession())
+                using (var session = DocumentStore.OpenSession())
                 {
                     session.Store(newsModel);
                     session.SaveChanges();
@@ -106,7 +109,7 @@ namespace LoLUniverse.Controllers
         {
             try
             {
-                using (var session = RavenContext.CreateSession())
+                using (var session = DocumentStore.OpenSession())
                 {
                     session.Delete<NewsModel>(id);
                     session.SaveChanges();

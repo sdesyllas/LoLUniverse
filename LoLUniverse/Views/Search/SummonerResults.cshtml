@@ -14,7 +14,7 @@
             <div class="col-md-4">
                 <h2>@summoner.SummonerDto.Name</h2>
                 <p>
-                    <img src="@summoner.ProfileImagePath" alt="@summoner.SummonerDto.Name"/>
+                    <img src="@summoner.ProfileImagePath" alt="@summoner.SummonerDto.Name" />
                 </p>
                 <p>
                     <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a>
@@ -28,11 +28,12 @@
 
             </div>
         </div>
+        <h3>Leagues</h3>
         <div class="row">
             @foreach (var leagueModel in summoner.LeagueModels)
             {
                 <div class="col-md-4">
-                    <h2>@leagueModel.LeagueName</h2>
+                    <h4>@leagueModel.LeagueName</h4>
                     <p>team : @leagueModel.LeagueDto.Name</p>
                     <p>
                         <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a>
@@ -41,6 +42,45 @@
                 </div>
             }
         </div>
+        <h3>Player Stats</h3>
+        <div class="row">
+            @foreach (var stat in summoner.PlayerStats.PlayerStatSummaries)
+            {
+                <div class="col-md-4">
+                    <h4>@stat.PlayerStatSummaryType</h4>
+                    <p>wins : @stat.Wins</p>
+                    <p>loss : @stat.Losses</p>
+
+                    <p>
+                        <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a>
+                    </p>
+
+                </div>
+            }
+        </div>
+        if (summoner.PlayedChampions != null)
+        {
+
+            <h3>Most played champions in ranked matches </h3>
+            <div class="row">
+                
+                @foreach (var playedChampion in summoner.PlayedChampions)
+                {
+                    <div class="col-md-4">
+                        <h4>@playedChampion.StaticChampion.Name</h4>
+                        <p>
+                            <img src="@playedChampion.ChampionSpriteImage" alt="@summoner.SummonerDto.Name" />
+                        </p>
+
+                        <p>score : @playedChampion.RankedStats.TotalChampionKills/@playedChampion.RankedStats.MaxNumDeaths/@playedChampion.RankedStats.TotalAssists
+                        
+                        <p>matches played : @playedChampion.RankedStats.TotalSessionsPlayed</p>
+
+
+                    </div>
+                }
+            </div>
+        }
     }
 }
 
