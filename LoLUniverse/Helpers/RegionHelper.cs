@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using RiotApi.Net.RestClient.Configuration;
+using RiotApi.Net.RestClient.Helpers;
 
 namespace LoLUniverse.Helpers
 {

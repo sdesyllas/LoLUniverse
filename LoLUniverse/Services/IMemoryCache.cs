@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LoLUniverse.Services
 {
-    public interface ICacheManager
+    public interface IMemoryCache
     {
         T Get<T>(string key, DateTime expiry, Func<T> getFromRiotFunc);
     }

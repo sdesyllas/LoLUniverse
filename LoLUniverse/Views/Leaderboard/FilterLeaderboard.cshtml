@@ -1,0 +1,20 @@
+﻿@using LoLUniverse.Helpers
+@using RiotApi.Net.RestClient.Helpers
+@model LoLUniverse.Models.LeaderboardModel
+
+
+@using (Html.BeginForm("FilterBoard", "Leaderboard", new {ReturnUrl = ViewBag.ReturnUrl}, FormMethod.Get, new {@class = "form-inline", role = "form"}))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Region, new {@class = "sr-only"})
+        @Html.DropDownList("Region", RegionHelper.SummonerRegions, "Region", new {@class = "form-control", onchange = "this.form.submit();" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Region, new { @class = "sr-only" })
+        @Html.DropDownList("GameQueueType", EnumHelper.GetSelectList(typeof(Enums.GameQueueType)), "GameQueueType", new { @class = "form-control", onchange = "this.form.submit();" })
+    </div>
+    <div class="form-group">
+        @Html.ValidationMessageFor(m => m.Region, "", new {@class = "text-danger"})
+    </div>
+}
+

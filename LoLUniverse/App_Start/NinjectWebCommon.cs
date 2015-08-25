@@ -116,8 +116,10 @@ namespace LoLUniverse
             kernel.Bind<IRiotClient>().To<RiotClient>().WithConstructorArgument(ConfigurationManager.AppSettings["RiotApiKey"]);
             // bind NoSql store
             kernel.Load<RavenModule>();
-            // bind cache manager
+            // bind nosql cache manager
             kernel.Bind<ICacheManager>().To<RavenCacheManager>();
+            // bind memory manager
+            kernel.Bind<IMemoryCache>().To<AspNetMemoryCache>();
         }        
     }
 }

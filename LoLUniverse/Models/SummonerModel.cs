@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using RiotApi.Net.RestClient.Dto.Game;
 using RiotApi.Net.RestClient.Dto.League;
 using RiotApi.Net.RestClient.Dto.Summoner;
 using RiotApi.Net.RestClient.Dto.Stats;
 using RiotApi.Net.RestClient.Dto.LolStaticData.Champion;
+using RiotApi.Net.RestClient.Dto.LolStaticData.SummonerSpell;
 using RiotApi.Net.RestClient.Dto.Stats.Generic;
 
 namespace LoLUniverse.Models
@@ -15,6 +17,8 @@ namespace LoLUniverse.Models
         public string SummonerKey { get; set; }
 
         public SummonerDto SummonerDto { get; set; }
+
+        public List<RecentGamesDto.GameDto> RecentGames { get; set; }
 
         public List<LeagueModel> LeagueModels { get; set; }
 

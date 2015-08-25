@@ -13,16 +13,14 @@ namespace LoLUniverse.Services
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
         private IDocumentStore _documentStore;
-        private IRiotClient _riotClient;
 
-        public RavenCacheManager(IDocumentStore documentStore, IRiotClient riotClient)
+        public RavenCacheManager(IDocumentStore documentStore)
         {
             _documentStore = documentStore;
-            _riotClient = riotClient;
         }
 
 
-        public T Get<T>(string key, DateTime expiry, Func<T> GetFromRiotFunc)
+        public T Get<T>(string key, DateTime expiry, Func<T> getFromRiotFunc)
         {
             using (var session = _documentStore.OpenSession())
             {
@@ -32,7 +30,7 @@ namespace LoLUniverse.Services
                 if (entity == null)
                 {
                     logger.Debug($"Didn't find {key} in cache");
-                    entity = GetFromRiotFunc.Invoke();
+                    entity = getFromRiotFunc.Invoke();
                     if (entity != null)
                     {
                         session.Store(entity, id: key);

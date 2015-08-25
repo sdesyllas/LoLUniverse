@@ -21,6 +21,7 @@ namespace LoLUniverse.Controllers
         private static readonly string AllStaticChampionsByRegionKey = "AllStaticChampions_{0}";
         private static readonly string SummonerByRegionAndNameCacheKey = "Summoner_{0}_{1}";
         private static readonly string SummonerLeagueByRegionAndIdCacheKey = "SummonerLeagues_{0}_{1}";
+        private static readonly string SummonerRecentGamesbyRegionAndIdCacheKey = "SummoneRecentGames_{0}_{1}";
         private static readonly string PlayerStatsByRegionAndIdCacheKey = "PlayerStats_{0}_{1}";
         private static readonly string PlayerRankedStatsByRegionAndIdCacheKey = "PlayerRankedStats_{0}_{1}";
         private static readonly string DataDragonVersionByRegionKey = "DataDragonVersions_{0}";
@@ -28,13 +29,15 @@ namespace LoLUniverse.Controllers
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        IRiotClient _riotClient;
-        ICacheManager _cacheManager;
+        private IRiotClient _riotClient;
+        private ICacheManager _cacheManager;
+        private IMemoryCache _memoryCache;
 
-        public SearchController(IRiotClient riotClient, ICacheManager cacheManager)
+        public SearchController(IRiotClient riotClient, ICacheManager cacheManager, IMemoryCache memoryCache)
         {
             _riotClient = riotClient;
             _cacheManager = cacheManager;
+            _memoryCache = memoryCache;
         }
 
         // GET: Search
@@ -48,17 +51,21 @@ namespace LoLUniverse.Controllers
             try
             {
                 logger.Debug($"Summoner.GetSummonersByName({searchSummoner.Region}, {searchSummoner.SummonerName})");
-                var summonerKey = string.Format(SummonerByRegionAndNameCacheKey, searchSummoner.Region, searchSummoner.SummonerName);
-                var summoners = _cacheManager.Get(summonerKey, DateTime.UtcNow.AddMinutes(60), () => _riotClient.Summoner.GetSummonersByName(searchSummoner.Region,
-                    searchSummoner.SummonerName));
+                var summonerKey = string.Format(SummonerByRegionAndNameCacheKey, searchSummoner.Region,
+                    searchSummoner.SummonerName);
+                var summoners = _cacheManager.Get(summonerKey, DateTime.UtcNow.AddMinutes(60),
+                    () => _riotClient.Summoner.GetSummonersByName(searchSummoner.Region,
+                        searchSummoner.SummonerName));
 
                 Dictionary<string, IEnumerable<LeagueDto>> summonerLeagues = null;
                 try
                 {
-                    var summonerLeagueLey = string.Format(SummonerLeagueByRegionAndIdCacheKey, searchSummoner.Region, string.Join(",", summoners.Values.Select(x => x.Id).ToArray()));
+                    var summonerLeagueLey = string.Format(SummonerLeagueByRegionAndIdCacheKey, searchSummoner.Region,
+                        string.Join(",", summoners.Values.Select(x => x.Id).ToArray()));
                     logger.Debug($"League.GetSummonerLeaguesByIds({searchSummoner.Region}, {summoners.Values.Select(x => x.Id).ToArray()})");
-                    summonerLeagues = _cacheManager.Get(summonerLeagueLey, DateTime.UtcNow.AddMinutes(60), () => _riotClient.League.GetSummonerLeaguesByIds(searchSummoner.Region,
-                        summoners.Values.Select(x => x.Id).ToArray()));
+                    summonerLeagues = _cacheManager.Get(summonerLeagueLey, DateTime.UtcNow.AddMinutes(60),
+                        () => _riotClient.League.GetSummonerLeaguesByIds(searchSummoner.Region,
+                            summoners.Values.Select(x => x.Id).ToArray()));
 
                 }
                 catch (RiotExceptionRaiser.RiotApiException exception)
@@ -90,10 +97,13 @@ namespace LoLUniverse.Controllers
 
             var allChampionsKey = string.Format(AllStaticChampionsByRegionKey, searchSummoner.Region);
             var allChampions =
-                _cacheManager.Get(allChampionsKey, DateTime.Now.AddDays(1), () => _riotClient.LolStaticData.GetChampionList(searchSummoner.Region, champData: "all"));
+                _cacheManager.Get(allChampionsKey, DateTime.Now.AddDays(1),
+                    () => _riotClient.LolStaticData.GetChampionList(searchSummoner.Region, champData: "all"));
 
-            var ddragonVersionsKey = string.Format(DataDragonVersionByRegionKey, searchSummoner.Region);
-            var ddragonVersions = _riotClient.LolStaticData.GetVersionData(searchSummoner.Region);
+            var ddragonKeyVersionsKey = string.Format(DataDragonVersionByRegionKey, searchSummoner.Region);
+
+            var ddragonVersions = _memoryCache.Get(ddragonKeyVersionsKey, DateTime.Now.AddDays(1),
+                () => _riotClient.LolStaticData.GetVersionData(searchSummoner.Region));
 
             foreach (var key in summonersDto.Keys)
             {
@@ -121,9 +131,18 @@ namespace LoLUniverse.Controllers
                     }
                 }
 
+                //summoner spells
+                var recentGamesKey = string.Format(SummonerRecentGamesbyRegionAndIdCacheKey, searchSummoner.Region,
+                    summonerDto.Id);
+                var recentGames = _cacheManager.Get(recentGamesKey, DateTime.Now.AddMinutes(60),
+                    () => _riotClient.Game.GetRecentGamesBySummonerId(searchSummoner.Region, summonerDto.Id));
+                var orderedRecentGames = recentGames.Games.OrderByDescending(x => x.CreateDate).ToList();
+                summonerModel.RecentGames = orderedRecentGames;
+
                 //summoner stats
                 var playersStatskey = string.Format(PlayerStatsByRegionAndIdCacheKey, searchSummoner.Region, summonerDto.Id);
-                var playerStats = _cacheManager.Get(playersStatskey, DateTime.UtcNow.AddMinutes(60), () => _riotClient.Stats.GetPlayerStatsBySummonerId(searchSummoner.Region, summonerDto.Id));
+                var playerStats = _cacheManager.Get(playersStatskey, DateTime.UtcNow.AddMinutes(60),
+                    () => _riotClient.Stats.GetPlayerStatsBySummonerId(searchSummoner.Region, summonerDto.Id));
                 summonerModel.PlayerStats = playerStats;
 
                 //summoner ranked stats
@@ -131,7 +150,8 @@ namespace LoLUniverse.Controllers
                 try
                 {
                     var rankedStatsKey = string.Format(PlayerRankedStatsByRegionAndIdCacheKey, searchSummoner.Region, summonerDto.Id);
-                    rankedStats = _cacheManager.Get(rankedStatsKey, DateTime.UtcNow.AddMinutes(60), () => _riotClient.Stats.GetRankedStatsBySummonerId(searchSummoner.Region, summonerDto.Id));
+                    rankedStats = _cacheManager.Get(rankedStatsKey, DateTime.UtcNow.AddMinutes(60),
+                        () => _riotClient.Stats.GetRankedStatsBySummonerId(searchSummoner.Region, summonerDto.Id));
                 }
                 catch (RiotExceptionRaiser.RiotApiException exception)
                 {
@@ -143,17 +163,22 @@ namespace LoLUniverse.Controllers
                 }
 
                 //champion data
-                var mostPlayedChampions = rankedStats.Champions.OrderByDescending(x => x.Stats.TotalSessionsPlayed).ToList();
-                foreach (var statChampion in mostPlayedChampions)
+                if (rankedStats != null)
                 {
-                    var staticChampion = allChampions.Data.Values.FirstOrDefault(x => x.Id == statChampion.Id);
-                    if (staticChampion != null)
+                    var mostPlayedChampions =
+                        rankedStats.Champions.OrderByDescending(x => x.Stats.TotalSessionsPlayed).ToList();
+                    foreach (var statChampion in mostPlayedChampions)
                     {
-                        SummonerModel.PlayedChampionModel playedChampion = new SummonerModel.PlayedChampionModel();
-                        playedChampion.StaticChampion = staticChampion;
-                        playedChampion.RankedStats = statChampion.Stats;
-                        playedChampion.ChampionSpriteImage = $"http://ddragon.leagueoflegends.com/cdn/{ddragonVersions.FirstOrDefault()}/img/champion/{staticChampion.Image.Full}";
-                        summonerModel.PlayedChampions.Add(playedChampion);
+                        var staticChampion = allChampions.Data.Values.FirstOrDefault(x => x.Id == statChampion.Id);
+                        if (staticChampion != null)
+                        {
+                            SummonerModel.PlayedChampionModel playedChampion = new SummonerModel.PlayedChampionModel();
+                            playedChampion.StaticChampion = staticChampion;
+                            playedChampion.RankedStats = statChampion.Stats;
+                            playedChampion.ChampionSpriteImage =
+                                $"http://ddragon.leagueoflegends.com/cdn/{ddragonVersions.FirstOrDefault()}/img/champion/{staticChampion.Image.Full}";
+                            summonerModel.PlayedChampions.Add(playedChampion);
+                        }
                     }
                 }
 
