@@ -7,7 +7,7 @@
 
 <h2>Champions (@Model.ChampionModels.Count)</h2>
 
-<div class="row alpha60">
+<div class="row">
     <div class="col-md-4">
         @using (Html.BeginForm("Index", "Champions", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Get, new { @class = "form-inline", role = "form" }))
         {
@@ -25,7 +25,7 @@
         }
     </div>
 </div>
-<div class="row alpha60">
+<div class="row">
 
     @foreach (var championModel in Model.ChampionModels)
     {

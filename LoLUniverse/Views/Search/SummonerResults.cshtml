@@ -10,7 +10,7 @@
 @{
     foreach (var summoner in Model.SummonerModels)
     {
-        <div class="row alpha60">
+        <div class="row ">
             <div class="col-md-4">
                 <h5>@summoner.SummonerDto.Name</h5>
                 <p>
@@ -75,7 +75,7 @@
         <h3>Player Stats</h3>
                     if (summoner.PlayerStats.PlayerStatSummaries != null)
                     {
-                        <div class="row alpha60">
+                        <div class="row">
                             @foreach (var stat in summoner.PlayerStats.PlayerStatSummaries)
                             {
                                 <div class="col-md-4">
@@ -90,7 +90,7 @@
                     {
 
                         <h3>Most played champions in ranked matches </h3>
-                        <div class="row alpha60">
+                        <div class="row">
 
                             @foreach (var playedChampion in summoner.PlayedChampions)
                             {
