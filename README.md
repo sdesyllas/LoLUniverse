@@ -2,7 +2,7 @@
 # LoLUniverse
 League of Legends web application utilizing [RiotApi.NET C# library](https://github.com/sdesyllas/RiotApi.NET)
 
-<a href="http://tinypic.com?ref=35d3lox" target="_blank"><img src="http://i59.tinypic.com/35d3lox.jpg" border="0" alt="Image and video hosting by TinyPic"></a>
+<img src="http://i59.tinypic.com/35d3lox.jpg" border="0" alt="Image and video hosting by TinyPic">
 
 # Description
 This is a web application open source project created with ASP.NET MVC that utilizing [RiotApi.NET C# library](https://github.com/sdesyllas/RiotApi.NET) and provide users with Summaries, Stats, Champion details and other stuff. The project is created with the ASP.NET MVC
