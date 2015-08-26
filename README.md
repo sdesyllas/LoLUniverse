@@ -11,6 +11,7 @@ In order to have this web application up and running you need to configure the f
 * MS Sql Server connection string (for User Management and Asp.Net Identity)
 * RavenDB Connection string (for NoSql store of League of Legends entities)
 * email smtp settings (for user account emails like two factor authentication)
+* Modify the Migrations/Configuration.cs Seed method for initial administrator user creation
 
 # Technologies and Libraries used
 * [RiotApi.Net](https://github.com/sdesyllas/RiotApi.NET)
