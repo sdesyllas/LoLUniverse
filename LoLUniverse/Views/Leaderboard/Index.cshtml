@@ -1,49 +1,69 @@
 ﻿@using LoLUniverse.Helpers
 @using LoLUniverse.Models.Search
+@using RiotApi.Net.RestClient.Helpers
 @model LoLUniverse.Models.LeaderboardModel
 
 
 <h2>
     @RiotApiEnumsDisplay.GetDisplayForQueueType(Model.LeagueDto.Queue)
 </h2>
-@Html.Partial("FilterLeaderboard", Model)
+<p>@Html.Partial("FilterLeaderboard", Model)</p>
 <table class="table">
     <tr>
-        <th>Player</th>
+        <th colspan="2">
+            @if (Model.GameQueueType == Enums.GameQueueType.RANKED_SOLO_5x5)
+            {
+                <span>Player</span>
+            }
+            else
+            {
+                <span>Team</span>
+            }
+        </th>
         <th>Wins</th>
         <th>Losses</th>
         <th>Points</th>
         <th>Points</th>
     </tr>
 
-    @foreach (var entry in Model.LeagueEntries)
+    @foreach (var entry in Model.LeagueEntryModels)
     {
         <tr>
             <td>
-                @Html.ActionLink(entry.PlayerOrTeamName, "SummonerResults", "Search", 
-               new { SummonerName = entry.PlayerOrTeamName, Region = (int)Model.Region }, null)
-            </td>
-            <td>
-                @entry.Wins
-            </td>
-            <td>
-                @entry.Losses
-            </td>
-            <td>
-                <img src="http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/score.png" alt="score"/> @entry.LeaguePoints
-            </td>
-            <td>
-                @if (entry.IsVeteran)
+                @if (Model.GameQueueType == Enums.GameQueueType.RANKED_SOLO_5x5)
                 {
-                    <img src = "/Content/Assets/Images/veteran.png" width="25" height="25"/>
+                    <img src="@entry.SummonerIcon" alt="@entry.LeagueEntry.PlayerOrTeamName" class="leaderBoardSummonerIcon">
                 }
-                else if (entry.IsFreshBlood)
+                else
+                {
+                    <span>@entry.LeagueEntry.PlayerOrTeamName</span>
+                }
+            </td>
+            <td>
+                @Html.ActionLink(entry.LeagueEntry.PlayerOrTeamName, "SummonerResults", "Search",
+                    new {SummonerName = entry.LeagueEntry.PlayerOrTeamName, Region = (int) Model.Region}, null)
+            </td>
+            <td>
+                @entry.LeagueEntry.Wins
+            </td>
+            <td>
+                @entry.LeagueEntry.Losses
+            </td>
+            <td>
+                <img src="http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/score.png" alt="score"/> @entry.LeagueEntry.LeaguePoints
+            </td>
+            <td>
+                @if (entry.LeagueEntry.IsVeteran)
+                {
+                    <img src="/Content/Assets/Images/veteran.png" width="25" height="25"/>
+                }
+                else if (entry.LeagueEntry.IsFreshBlood)
                 {
                     <img src="/Content/Assets/Images/fresh-vine_43542.png" width="25" height="25"/>
                 }
-                else if (entry.IsHotStreak)
+                else if (entry.LeagueEntry.IsHotStreak)
                 {
-                    <img src="http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/spells.png" width="25" height="25" />
+                    <img src="http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/spells.png" width="25" height="25"/>
                 }
             </td>
         </tr>

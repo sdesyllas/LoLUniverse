@@ -31,3 +31,13 @@ textarea {
     color: #ff0000 !important;
     font-weight: bold;
 }
+
+img.leaderBoardSummonerIcon {
+    width: 50px;
+    height: 50px;
+}
+
+img.tierBadge {
+    width: 165px;
+    height: 155px;
+}

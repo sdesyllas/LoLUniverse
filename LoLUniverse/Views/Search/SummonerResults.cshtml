@@ -14,17 +14,10 @@
             <div class="col-md-4">
                 <h5>@summoner.SummonerDto.Name</h5>
                 <p>
-                    <img src="@summoner.ProfileImagePath" alt="@summoner.SummonerDto.Name" />
+                    <img src="@summoner.ProfileImagePath" alt="@summoner.SummonerDto.Name"/>
                 </p>
-                <p>
-                    <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a>
-                </p>
-            </div>
-            <div class="col-md-4">
                 <h2>@summoner.SummonerDto.SummonerLevel</h2>
                 <p>summoner level</p>
-            </div>
-            <div class="col-md-4">
                 @{
                     var recentGame = summoner.RecentGames.FirstOrDefault();
                 }
@@ -41,29 +34,43 @@
                             <span>Lost :(</span>
                         }
                     </p>
-                    <p><img src="http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/score.png" alt="score"/> @recentGame.Stats.ChampionsKilled / @recentGame.Stats.NumDeaths / @recentGame.Stats.Assists</p>
-                    <p><img src="http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/gold.png" alt="gold"/> @recentGame.Stats.GoldEarned</p>
-                    <p><img src="http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/minion.png" alt="minions"/> @recentGame.Stats.MinionsKilled </p>
+                    <p><img src="http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/score.png" alt="score" /> @recentGame.Stats.ChampionsKilled / @recentGame.Stats.NumDeaths / @recentGame.Stats.Assists</p>
+                    <p><img src="http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/gold.png" alt="gold" /> @recentGame.Stats.GoldEarned</p>
+                    <p>
+                        <img src="http://ddragon.leagueoflegends.com/cdn/5.2.1/img/ui/minion.png" alt="minions" /> @recentGame.Stats.MinionsKilled
+                    </p>
                 }
                 else
                 {
                     <h2>not recent game played</h2>
                 }
             </div>
-        </div>
-        <h3>Leagues</h3>
-        <div class="row">
-            @foreach (var leagueModel in summoner.LeagueModels)
-            {
-                <div class="col-md-4">
-                    <h4>@leagueModel.LeagueName</h4>
-                    <p>team : @leagueModel.LeagueDto.Name</p>
-                    <p>
-                        <a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a>
-                    </p>
 
-                </div>
+            @if (summoner.LeagueModels != null && summoner.LeagueModels.Count > 0)
+            {
+                foreach (var leagueModel in summoner.LeagueModels)
+                {
+                    <div class="col-md-4">
+                        <h4>@leagueModel.LeagueDto.Tier</h4>
+                        <h5>@leagueModel.LeagueName</h5>
+                        <p><img class="tierBadge" src="@Url.Content("~/Content/Assets/Images/Badges/" + @leagueModel.LeagueDto.Tier + "Badge.png")" alt="@leagueModel.LeagueDto.Tier" /></p>
+                        <p>
+                            team : @leagueModel.LeagueDto.Name
+                        </p>
+                    </div>
+                }
             }
+            else
+            {
+
+                <div class="col-md-4">
+                    <h4>Unranked</h4>
+                    <p><img src="/Content/Assets/Images/Badges/UnrankedBadge.png"/>
+                    </p>
+                </div>
+
+            }
+            
         </div>
         <h3>Player Stats</h3>
                     if (summoner.PlayerStats.PlayerStatSummaries != null)

@@ -237,6 +237,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\CacheKeys.cs" />
     <Compile Include="Helpers\InitialEnityLoaders.cs" />
     <Compile Include="Helpers\RegionHelper.cs" />
     <Compile Include="Helpers\RiotApiEnumsDisplay.cs" />
@@ -265,6 +266,15 @@
     <Compile Include="Utilities\EmailSender.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Assets\Images\Badges\BlankBadge.png" />
+    <Content Include="Content\Assets\Images\Badges\BronzeBadge.png" />
+    <Content Include="Content\Assets\Images\Badges\ChallengerBadge.png" />
+    <Content Include="Content\Assets\Images\Badges\DiamondBadge.png" />
+    <Content Include="Content\Assets\Images\Badges\GoldBadge.png" />
+    <Content Include="Content\Assets\Images\Badges\MasterBadge.png" />
+    <Content Include="Content\Assets\Images\Badges\PlatinumBadge.png" />
+    <Content Include="Content\Assets\Images\Badges\SilverBadge.png" />
+    <Content Include="Content\Assets\Images\Badges\UnrankedBadge.png" />
     <Content Include="Content\Assets\Images\fresh-vine_43542.png" />
     <Content Include="Content\Assets\Images\logo.png" />
     <Content Include="Content\Assets\Images\veteran.png" />
