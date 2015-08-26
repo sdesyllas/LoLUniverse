@@ -4,6 +4,8 @@ League of Legends web application utilizing [RiotApi.NET C# library](https://git
 
 <img src="http://i59.tinypic.com/35d3lox.jpg" border="0" alt="Image and video hosting by TinyPic">
 
+<img src="http://i59.tinypic.com/2i266up.jpg" border="0" alt="Image and video hosting by TinyPic">
+
 # Description
 This is a web application that utilizing [RiotApi.NET C# library](https://github.com/sdesyllas/RiotApi.NET) capabilities and provide users with Summaries, Stats, Champion details and other stuff. The project is created with the ASP.NET MVC
 framework and it is using advanced mechanics of caching, NoSQL performance solution and user account system.
