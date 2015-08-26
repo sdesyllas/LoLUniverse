@@ -228,6 +228,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ChampionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeaderboardController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -247,6 +248,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ChampionsModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\DdVersionsModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -266,6 +268,7 @@
     <Compile Include="Utilities\EmailSender.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Assets\Images\art\morgana_vs_ahri_3.jpg" />
     <Content Include="Content\Assets\Images\Badges\BlankBadge.png" />
     <Content Include="Content\Assets\Images\Badges\BronzeBadge.png" />
     <Content Include="Content\Assets\Images\Badges\ChallengerBadge.png" />
@@ -301,6 +304,8 @@
     <Content Include="Content\jquery-ui.structure.min.css" />
     <Content Include="Content\jquery-ui.theme.css" />
     <Content Include="Content\jquery-ui.theme.min.css" />
+    <Content Include="Scripts\canvasjs.min.js" />
+    <Content Include="Scripts\jquery.canvasjs.min.js" />
     <Content Include="Views\favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -361,6 +366,9 @@
     <Content Include="Views\Search\SummonerResults.cshtml" />
     <Content Include="Views\Account\WaitingForEmailConfirmation.cshtml" />
     <Content Include="Views\Home\NewDetails.cshtml" />
+    <Content Include="Views\Champions\Index.cshtml" />
+    <Content Include="Views\Champions\ChampionChart.cshtml" />
+    <Content Include="Views\Champions\Details.cshtml" />
     <None Include="Views\Home\ThankYou.cshtml" />
     <Content Include="Views\NewsAdmin\Index.cshtml" />
     <Content Include="Views\NewsAdmin\Details.cshtml" />

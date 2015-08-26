@@ -1,0 +1,29 @@
+﻿@model RiotApi.Net.RestClient.Dto.LolStaticData.Champion.ChampionDto
+
+@section scripts{
+    @Scripts.Render("~/bundles/canvas")
+    <script type="text/javascript">
+        window.onload = function () {
+            var chart = new CanvasJS.Chart("chartContainer",
+            {
+                animationEnabled: true,
+                title: {
+                    text: "Chart with Labels on X Axis"
+                },
+                data: [
+                {
+                    type: "column", //change type to bar, line, area, pie, etc
+                    dataPoints: [
+                        { label: "banana", y: 18 },
+                        { label: "orange", y: 29 },
+                        { label: "apple", y: 40 },
+                        { label: "mango", y: 34 },
+                        { label: "grape", y: 24 }
+                    ]
+                }
+                ]
+            });
+            chart.render();
+        }
+    </script>
+}

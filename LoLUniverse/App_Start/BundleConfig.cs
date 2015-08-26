@@ -15,6 +15,9 @@ namespace LoLUniverse
                         "~/Scripts/jquery-ui.min.js",
                         "~/Scripts/jquery-ui-timepicker-addon.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/canvas").Include(
+                "~/Scripts/canvasjs.min.js"));
+
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));

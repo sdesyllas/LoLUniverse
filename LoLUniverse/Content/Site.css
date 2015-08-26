@@ -3,6 +3,13 @@
     padding-bottom: 20px;
 }
 
+/* Art */
+body {
+    background-image: url('Assets/Images/art/morgana_vs_ahri_3.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -27,7 +34,7 @@ textarea {
     padding-top: 50px;
 }
 
-.redAdminText a{
+.redAdminText a {
     color: #ff0000 !important;
     font-weight: bold;
 }
@@ -40,4 +47,19 @@ img.leaderBoardSummonerIcon {
 img.tierBadge {
     width: 165px;
     height: 155px;
+}
+
+.nonF2pClass {
+    opacity: 0.4;
+    filter: alpha(opacity=40); /* For IE8 and earlier */
+}
+
+.alpha60 {
+    background-color: rgb(0, 0, 0);
+    /* RGBa with 0.6 opacity */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* For IE 5.5 - 7*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+    /* For IE 8*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
 }

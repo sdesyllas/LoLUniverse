@@ -1,0 +1,51 @@
+﻿@using LoLUniverse.Helpers
+@using RiotApi.Net.RestClient.Helpers
+@model LoLUniverse.Models.ChampionsModel
+@{
+    ViewBag.Title = "Champions";
+}
+
+<h2>Champions (@Model.ChampionModels.Count)</h2>
+
+<div class="row alpha60">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Index", "Champions", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Get, new { @class = "form-inline", role = "form" }))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.Region, new {@class = "sr-only"})
+                @Html.DropDownListFor(m => m.Region, RegionHelper.SummonerRegions, new { @class = "form-control", onchange = "this.form.submit();" })
+            </div>
+            <div class="form-group">
+                <label class="checkbox-inline">Free2Play only</label>
+                @Html.CheckBoxFor(m => m.F2pOnly, new { @class = "form-control", onchange = "this.form.submit();" })
+            </div>
+            <div class="form-group">
+                @Html.ValidationMessageFor(m => m.Region, "", new { @class = "text-danger" })
+            </div>
+        }
+    </div>
+</div>
+<div class="row alpha60">
+
+    @foreach (var championModel in Model.ChampionModels)
+    {
+        <a href="@Url.Action("Details", "Champions", new {Region = Model.Region ,ChampionId = championModel.StaticChampionDto.Id})">
+            <div class="col-md-4">
+                <h4>@championModel.StaticChampionDto.Name</h4>
+                @{
+                    var nonf2pClass = "nonF2pClass";
+                    if (championModel.ChampionDto.FreeToPlay)
+                    {
+                        nonf2pClass = "";
+                    }
+                }
+                <p>
+                    <img class="@nonf2pClass" src="@championModel.ChampionImage" alt="@championModel.StaticChampionDto.Name"/>
+                </p>
+                <p>
+                    @championModel.StaticChampionDto.Partype
+                </p>
+            </div>
+        </a>
+    }
+</div>

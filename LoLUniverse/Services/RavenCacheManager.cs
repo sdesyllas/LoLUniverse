@@ -42,5 +42,28 @@ namespace LoLUniverse.Services
                 return entity;
             }
         }
+
+        public T Get<T>(int id, DateTime expiry, Func<T> getFromRiotFunc)
+        {
+            using (var session = _documentStore.OpenSession())
+            {
+                logger.Debug($"Getting {typeof(T)}/{id} from cache");
+
+                var entity = session.Load<T>(id);
+                if (entity == null)
+                {
+                    logger.Debug($"Didn't find {typeof(T)}/{id} in cache");
+                    entity = getFromRiotFunc.Invoke();
+                    if (entity != null)
+                    {
+                        session.Store(entity);
+                        session.Advanced.GetMetadataFor(entity)["Raven-Expiration-Date"] = new RavenJValue(expiry);
+                        session.SaveChanges();
+                        logger.Debug($"Stored {typeof(T)}/{id} in cache");
+                    }
+                }
+                return entity;
+            }
+        }
     }
 }

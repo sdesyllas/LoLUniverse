@@ -12,6 +12,7 @@ using RiotApi.Net.RestClient.Helpers;
 using LoLUniverse.Services;
 using RiotApi.Net.RestClient.Dto.Stats;
 using System;
+using RiotApi.Net.RestClient.Configuration;
 
 namespace LoLUniverse.Controllers
 {
@@ -31,9 +32,11 @@ namespace LoLUniverse.Controllers
         }
 
         // GET: Search
-        public ActionResult SearchBox()
+        public ActionResult SearchBox(SearchSummoner searchSummoner)
         {
-            return View();
+            searchSummoner.Region = RiotApiConfig.Regions.NA;
+            
+            return View(searchSummoner);
         }
 
         public ActionResult SummonerResults(SearchSummoner searchSummoner)
