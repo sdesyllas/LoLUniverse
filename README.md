@@ -1,6 +1,7 @@
 <img src="http://i61.tinypic.com/ji00hl.jpg" border="0" alt="Image and video hosting by TinyPic">
 # LoLUniverse
 League of Legends web application utilizing [RiotApi.NET C# library](https://github.com/sdesyllas/RiotApi.NET)
+
 <a href="http://tinypic.com?ref=35d3lox" target="_blank"><img src="http://i59.tinypic.com/35d3lox.jpg" border="0" alt="Image and video hosting by TinyPic"></a>
 
 # Description
