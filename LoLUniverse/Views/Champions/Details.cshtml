@@ -42,8 +42,16 @@
     </div>
 </div>
 <br />
-<div class="jumbotron alpha60">
-    <h1>Lore</h1>
-    <p class="lead">@Html.Raw(Model.StaticChampionDto.Lore)</p>
+
+<div class="row alpha60">
+    <div class=" col-md-4">
+        <img src="@Model.LoadingImage" alt="@Model.StaticChampionDto.Name" />
+    </div>
+    <div class=" col-md-8">
+        <h1>Lore</h1>
+        <p class="lead">@Html.Raw(Model.StaticChampionDto.Lore)</p>
+    </div>
 </div>
+
+
 
