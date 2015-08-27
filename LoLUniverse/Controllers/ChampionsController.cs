@@ -91,7 +91,7 @@ namespace LoLUniverse.Controllers
             championModel.SplashImage =
                 $"http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{championModel.StaticChampionDto.Key}_{championModel.CurrentSkinId}.jpg";
             championModel.LoadingImage =
-                $"http://ddragon.leagueoflegends.com/cdn/img/champion/loading/{championModel.StaticChampionDto.Name.Replace(" ", "")}_{championModel.CurrentSkinId}.jpg";
+                $"http://ddragon.leagueoflegends.com/cdn/img/champion/loading/{championModel.StaticChampionDto.Key}_{championModel.CurrentSkinId}.jpg";
         }
 
         private void PrepareModel(ChampionsModel model, RiotDtos.Champion.ChampionListDto championListDto,
