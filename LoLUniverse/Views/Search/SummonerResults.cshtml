@@ -11,10 +11,10 @@
     foreach (var summoner in Model.SummonerModels)
     {
         <div class="row ">
-            <div class="col-md-4">
+            <div class="col-md-5">
                 <h5>@summoner.SummonerDto.Name</h5>
                 <p>
-                    <img src="@summoner.ProfileImagePath" alt="@summoner.SummonerDto.Name"/>
+                    <img src="@summoner.ProfileImagePath" alt="@summoner.SummonerDto.Name" />
                 </p>
                 <h2>@summoner.SummonerDto.SummonerLevel</h2>
                 <p>summoner level</p>
@@ -45,34 +45,35 @@
                     <h2>not recent game played</h2>
                 }
             </div>
-
-            @if (summoner.LeagueModels != null && summoner.LeagueModels.Count > 0)
-            {
-                foreach (var leagueModel in summoner.LeagueModels)
+            <div class="col-md-7">
+                @if (summoner.LeagueModels != null && summoner.LeagueModels.Count > 0)
                 {
+                    foreach (var leagueModel in summoner.LeagueModels)
+                    {
+                        <div class="col-md-4">
+                            <h4>@leagueModel.LeagueDto.Tier</h4>
+                            <h5>@leagueModel.LeagueName</h5>
+                            <p><img class="tierBadge" src="@Url.Content("~/Content/Assets/Images/Badges/" + @leagueModel.LeagueDto.Tier + "Badge.png")" alt="@leagueModel.LeagueDto.Tier" /></p>
+                            <p>
+                                team : @leagueModel.LeagueDto.Name
+                            </p>
+                        </div>
+                    }
+                }
+                else
+                {
+
                     <div class="col-md-4">
-                        <h4>@leagueModel.LeagueDto.Tier</h4>
-                        <h5>@leagueModel.LeagueName</h5>
-                        <p><img class="tierBadge" src="@Url.Content("~/Content/Assets/Images/Badges/" + @leagueModel.LeagueDto.Tier + "Badge.png")" alt="@leagueModel.LeagueDto.Tier" /></p>
+                        <h4>Unranked</h4>
                         <p>
-                            team : @leagueModel.LeagueDto.Name
+                            <img src="/Content/Assets/Images/Badges/UnrankedBadge.png" />
                         </p>
                     </div>
+
                 }
-            }
-            else
-            {
-
-                <div class="col-md-4">
-                    <h4>Unranked</h4>
-                    <p><img src="/Content/Assets/Images/Badges/UnrankedBadge.png"/>
-                    </p>
-                </div>
-
-            }
-            
+            </div>
         </div>
-        <h3>Player Stats</h3>
+            <h3>Player Stats</h3>
                     if (summoner.PlayerStats.PlayerStatSummaries != null)
                     {
                         <div class="row">

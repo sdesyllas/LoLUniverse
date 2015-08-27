@@ -2,9 +2,9 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
+<div class="jumbotron alpha60">
     <h1>LoLUniverse</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+    <p class="lead">This is a web application that utilizing <a href="http://sdesyllas.github.io/RiotApi.NET/" target="_blank">RiotApi.NET C#</a> library capabilities and provide users with Summaries, Stats, Champion details and other stuff. The project is created with the ASP.NET MVC framework and it is using advanced mechanics of caching, NoSQL performance solution and user account system.</p>
 </div>
 
 <div class="row" id="newsPlaceHolder">
@@ -39,7 +39,7 @@
                     self.newsFeed(data);
                 });
         }
-        
+
         ko.applyBindings(new NewsViewModel());
 
         function decodeEntities(encodedString) {

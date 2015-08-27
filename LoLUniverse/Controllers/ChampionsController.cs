@@ -48,7 +48,7 @@ namespace LoLUniverse.Controllers
             {
                 allChampions.Champions = allChampions.Champions.Where(x => x.FreeToPlay).ToList();
             }
-            model.Region = Regions.NA;
+            //model.Region = Regions.NA;
             PrepareModel(model, allChampions, allStaticChampions);
             return View(model);
         }
@@ -57,7 +57,9 @@ namespace LoLUniverse.Controllers
         {
             //var champion = _riotClient.Champion.RetrieveChampionById(model.Region, model.ChampionId);
 
-            var staticChampion = _cacheManager.Get(model.ChampionId, CacheExpiry,
+            var championKey = string.Format(CacheKeys.StaticChampionByRegionAndIdKey, model.Region, model.ChampionId);
+
+            var staticChampion = _memoryCache.Get(championKey, CacheExpiry,
                 () => _riotClient.LolStaticData.GetChampionById(model.Region, model.ChampionId, champData: "all"));
 
             PrepareDetailsModel(model, null, staticChampion);
@@ -65,19 +67,27 @@ namespace LoLUniverse.Controllers
             return View(model);
         }
 
-        private void PrepareDetailsModel(ChampionsModel.ChampionModel championModel, RiotDtos.Champion.ChampionListDto.ChampionDto championDto,
+        private void PrepareDetailsModel(ChampionsModel.ChampionModel championModel,
+            RiotDtos.Champion.ChampionListDto.ChampionDto championDto,
             RiotDtos.LolStaticData.Champion.ChampionDto staticChampionDto)
         {
             var ddragonKeyVersionsKey = string.Format(CacheKeys.DataDragonVersionByRegionKey, championModel.Region);
             var ddragonVersions = _memoryCache.Get(ddragonKeyVersionsKey, DateTime.Now.AddDays(1),
                 () => _riotClient.LolStaticData.GetVersionData(championModel.Region));
 
+            var ddVersions = ddragonVersions as IList<string> ?? ddragonVersions.ToList();
+            PrepareDetailsModel(championModel, championDto, staticChampionDto, ddVersions);
+        }
+
+        private void PrepareDetailsModel(ChampionsModel.ChampionModel championModel, RiotDtos.Champion.ChampionListDto.ChampionDto championDto,
+            RiotDtos.LolStaticData.Champion.ChampionDto staticChampionDto, IEnumerable<string> ddVersions)
+        {
             championModel.ChampionDto = championDto;
             championModel.StaticChampionDto = staticChampionDto;
             championModel.ChampionImage =
-                 $"http://ddragon.leagueoflegends.com/cdn/{ddragonVersions.FirstOrDefault()}/img/champion/{championModel.StaticChampionDto.Image.Full}";
+                 $"http://ddragon.leagueoflegends.com/cdn/{ddVersions.FirstOrDefault()}/img/champion/{championModel.StaticChampionDto.Image.Full}";
             championModel.ChampionImage =
-                 $"http://ddragon.leagueoflegends.com/cdn/{ddragonVersions.FirstOrDefault()}/img/champion/{championModel.StaticChampionDto.Image.Full}";
+                 $"http://ddragon.leagueoflegends.com/cdn/{ddVersions.FirstOrDefault()}/img/champion/{championModel.StaticChampionDto.Image.Full}";
             championModel.SplashImage =
                 $"http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{championModel.StaticChampionDto.Key}_{championModel.CurrentSkinId}.jpg";
             championModel.LoadingImage =
@@ -87,13 +97,18 @@ namespace LoLUniverse.Controllers
         private void PrepareModel(ChampionsModel model, RiotDtos.Champion.ChampionListDto championListDto,
             RiotDtos.LolStaticData.Champion.ChampionListDto staticChampionListDto)
         {
+            var ddragonKeyVersionsKey = string.Format(CacheKeys.DataDragonVersionByRegionKey, model.Region);
+            var ddragonVersions = _memoryCache.Get(ddragonKeyVersionsKey, DateTime.Now.AddDays(1),
+                () => _riotClient.LolStaticData.GetVersionData(model.Region));
+
             model.ChampionModels = new List<ChampionsModel.ChampionModel>();
             
             foreach (var championDto in championListDto.Champions)
             {
                 ChampionsModel.ChampionModel championModel = new ChampionsModel.ChampionModel();
+                var ddVersions = ddragonVersions as IList<string> ?? ddragonVersions.ToList();
                 PrepareDetailsModel(championModel, championDto,
-                    staticChampionListDto.Data.Values.FirstOrDefault(x => x.Id == championDto.Id));
+                    staticChampionListDto.Data.Values.FirstOrDefault(x => x.Id == championDto.Id), ddVersions);
                 model.ChampionModels.Add(championModel);
             }
         }

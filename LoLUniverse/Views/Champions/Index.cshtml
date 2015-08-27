@@ -16,7 +16,7 @@
                 @Html.DropDownListFor(m => m.Region, RegionHelper.SummonerRegions, new { @class = "form-control", onchange = "this.form.submit();" })
             </div>
             <div class="form-group">
-                <label class="checkbox-inline">Free2Play only</label>
+                <label class="checkbox-inline">Free to play this week : </label>
                 @Html.CheckBoxFor(m => m.F2pOnly, new { @class = "form-control", onchange = "this.form.submit();" })
             </div>
             <div class="form-group">
