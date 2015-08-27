@@ -2,7 +2,7 @@
 # LoLUniverse
 League of Legends web application utilizing [RiotApi.NET C# library](https://github.com/sdesyllas/RiotApi.NET)
 
-# [Check a live demo here](http://ec2-52-25-36-129.us-west-2.compute.amazonaws.com)
+## [Check the live demo here](http://ec2-52-25-36-129.us-west-2.compute.amazonaws.com)
 
 <img src="http://i58.tinypic.com/x6nbit.jpg" border="0" alt="Image and video hosting by TinyPic">
 
