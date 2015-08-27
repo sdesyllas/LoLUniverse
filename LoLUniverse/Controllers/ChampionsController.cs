@@ -32,7 +32,7 @@ namespace LoLUniverse.Controllers
             _cacheManager = cacheManager;
             _memoryCache = memoryCache;
         }
-
+        
         // GET: Champions
         public ActionResult Index(ChampionsModel model)
         {
