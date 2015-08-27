@@ -2,6 +2,10 @@
 @using RiotApi.Net.RestClient.Helpers
 @model LoLUniverse.Models.ChampionsModel.ChampionModel
 
+@section headerscripts{
+    @Scripts.Render("~/bundles/canvas")
+}
+
 <style>
     body
     {
@@ -13,10 +17,14 @@
 <div class="row">
     <div class="col-md-4">
         <h2>@Model.StaticChampionDto.Name</h2>
-        <img src="@Model.ChampionImage" alt="@Model.StaticChampionDto.Name"/>
+        <img src="@Model.ChampionImage" alt="@Model.StaticChampionDto.Name" />
+    </div>
+    <div class="col-md-8">
+        @Html.Partial("ChampionChart", Model.StaticChampionDto)
     </div>
 </div>
-<br/>
+
+<br />
 <div class="row">
     <div class="col-md-4">
         @using (Html.BeginForm("Details", "Champions", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Get, new { @class = "form-inline", role = "form" }))
@@ -33,7 +41,7 @@
         }
     </div>
 </div>
-<br/>
+<br />
 <div class="jumbotron alpha60">
     <h1>Lore</h1>
     <p class="lead">@Html.Raw(Model.StaticChampionDto.Lore)</p>

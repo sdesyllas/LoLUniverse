@@ -61,7 +61,7 @@ namespace LoLUniverse.Controllers
 
             var staticChampion = _memoryCache.Get(championKey, CacheExpiry,
                 () => _riotClient.LolStaticData.GetChampionById(model.Region, model.ChampionId, champData: "all"));
-
+            
             PrepareDetailsModel(model, null, staticChampion);
             ViewBag.Title = $"Champion {model.StaticChampionDto.Name}";
             return View(model);
