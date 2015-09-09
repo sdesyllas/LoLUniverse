@@ -90,12 +90,12 @@ namespace LoLUniverse.Controllers
 
             var allChampionsKey = string.Format(CacheKeys.AllStaticChampionsByRegionKey, searchSummoner.Region);
             var allChampions =
-                _cacheManager.Get(allChampionsKey, DateTime.Now.AddDays(1),
+                _cacheManager.Get(allChampionsKey, DateTime.UtcNow.AddDays(1),
                     () => _riotClient.LolStaticData.GetChampionList(searchSummoner.Region, champData: "all"));
 
             var ddragonKeyVersionsKey = string.Format(CacheKeys.DataDragonVersionByRegionKey, searchSummoner.Region);
 
-            var ddragonVersions = _memoryCache.Get(ddragonKeyVersionsKey, DateTime.Now.AddDays(1),
+            var ddragonVersions = _memoryCache.Get(ddragonKeyVersionsKey, DateTime.UtcNow.AddDays(1),
                 () => _riotClient.LolStaticData.GetVersionData(searchSummoner.Region));
 
             foreach (var key in summonersDto.Keys)
@@ -127,7 +127,7 @@ namespace LoLUniverse.Controllers
                 //summoner spells
                 var recentGamesKey = string.Format(CacheKeys.SummonerRecentGamesbyRegionAndIdCacheKey, searchSummoner.Region,
                     summonerDto.Id);
-                var recentGames = _cacheManager.Get(recentGamesKey, DateTime.Now.AddMinutes(60),
+                var recentGames = _cacheManager.Get(recentGamesKey, DateTime.UtcNow.AddMinutes(60),
                     () => _riotClient.Game.GetRecentGamesBySummonerId(searchSummoner.Region, summonerDto.Id));
                 var orderedRecentGames = recentGames.Games.OrderByDescending(x => x.CreateDate).ToList();
                 summonerModel.RecentGames = orderedRecentGames;

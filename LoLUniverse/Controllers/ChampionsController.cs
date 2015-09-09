@@ -17,7 +17,7 @@ namespace LoLUniverse.Controllers
 {
     public class ChampionsController : Controller
     {
-        private static readonly DateTime CacheExpiry = DateTime.Now.AddDays(1);
+        private static readonly DateTime CacheExpiry = DateTime.UtcNow.AddHours(3);
 
         [Inject]
         public IDocumentStore DocumentStore { get; set; }
@@ -72,7 +72,7 @@ namespace LoLUniverse.Controllers
             RiotDtos.LolStaticData.Champion.ChampionDto staticChampionDto)
         {
             var ddragonKeyVersionsKey = string.Format(CacheKeys.DataDragonVersionByRegionKey, championModel.Region);
-            var ddragonVersions = _memoryCache.Get(ddragonKeyVersionsKey, DateTime.Now.AddDays(1),
+            var ddragonVersions = _memoryCache.Get(ddragonKeyVersionsKey, DateTime.UtcNow.AddDays(1),
                 () => _riotClient.LolStaticData.GetVersionData(championModel.Region));
 
             var ddVersions = ddragonVersions as IList<string> ?? ddragonVersions.ToList();
@@ -98,7 +98,7 @@ namespace LoLUniverse.Controllers
             RiotDtos.LolStaticData.Champion.ChampionListDto staticChampionListDto)
         {
             var ddragonKeyVersionsKey = string.Format(CacheKeys.DataDragonVersionByRegionKey, model.Region);
-            var ddragonVersions = _memoryCache.Get(ddragonKeyVersionsKey, DateTime.Now.AddDays(1),
+            var ddragonVersions = _memoryCache.Get(ddragonKeyVersionsKey, DateTime.UtcNow.AddDays(1),
                 () => _riotClient.LolStaticData.GetVersionData(model.Region));
 
             model.ChampionModels = new List<ChampionsModel.ChampionModel>();

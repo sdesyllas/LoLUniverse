@@ -35,7 +35,7 @@ namespace LoLUniverse.Controllers
             var cacheKey = string.Format(CacheKeys.ChallengerTierLeagueKey, RiotApiConfig.Regions.EUNE,
                 Enums.GameQueueType.RANKED_SOLO_5x5);
 
-            var challengers = _cacheManager.Get(cacheKey, DateTime.Now.AddMinutes(60),
+            var challengers = _cacheManager.Get(cacheKey, DateTime.UtcNow.AddMinutes(60),
                 () =>
                     _riotClient.League.GetChallengerTierLeagues(RiotApiConfig.Regions.EUNE,
                         Enums.GameQueueType.RANKED_SOLO_5x5));
@@ -56,7 +56,7 @@ namespace LoLUniverse.Controllers
         {
             var cacheKey = string.Format(CacheKeys.ChallengerTierLeagueKey, model.Region, model.GameQueueType);
 
-            var challengers = _cacheManager.Get(cacheKey, DateTime.Now.AddMinutes(60),
+            var challengers = _cacheManager.Get(cacheKey, DateTime.UtcNow.AddMinutes(60),
                 () =>
                     _riotClient.League.GetChallengerTierLeagues(model.Region, model.GameQueueType));
 
@@ -70,13 +70,13 @@ namespace LoLUniverse.Controllers
 
         public void PrepareModel(RiotApiConfig.Regions region, Enums.GameQueueType gameQueueType, LeaderboardModel model, List<LeagueDto.LeagueEntryDto> topEntries)
         {
-            var ddragonVersions = _memoryCache.Get(CacheKeys.DataDragonVersionByRegionKey, DateTime.Now.AddDays(1),
+            var ddragonVersions = _memoryCache.Get(CacheKeys.DataDragonVersionByRegionKey, DateTime.UtcNow.AddDays(1),
                 () => _riotClient.LolStaticData.GetVersionData(region));
 
             var summonerOrTeamIds = topEntries.Select(x => x.PlayerOrTeamId).ToArray();
             var summonerCacheKey = string.Format(CacheKeys.SummonerByRegionAndIdCacheKey, region, summonerOrTeamIds);
 
-            var summoners = _cacheManager.Get(summonerCacheKey, DateTime.Now.AddDays(1),
+            var summoners = _cacheManager.Get(summonerCacheKey, DateTime.UtcNow.AddDays(1),
                 () => _riotClient.Summoner.GetSummonersById(region, summonerOrTeamIds));
            
             model.LeagueEntryModels = new List<LeaderboardModel.SummonerEntryModel>();
