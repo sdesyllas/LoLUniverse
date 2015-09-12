@@ -9,7 +9,5 @@ namespace LoLUniverse.Services
     public interface ICacheManager
     {
         T Get<T>(string key, DateTime expiry, Func<T> getFromRiotFunc);
-
-        T Get<T>(int id, DateTime expiry, Func<T> getFromRiotFunc);
     }
 }

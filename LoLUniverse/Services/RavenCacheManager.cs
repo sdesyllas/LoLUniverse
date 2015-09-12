@@ -19,6 +19,40 @@ namespace LoLUniverse.Services
             _documentStore = documentStore;
         }
 
+        private T Store<T>(IDocumentSession session, string key, DateTime expiry, Func<T> getFromRiotFunc)
+        {
+            return Store<T>(session, default(T), key, expiry, getFromRiotFunc);
+        }
+
+        private T Store<T>(IDocumentSession session, T entity, string key, DateTime expiry, Func<T> getFromRiotFunc)
+        {
+            logger.Debug($"Didn't find {key} in cache");
+            entity = getFromRiotFunc.Invoke();
+            if (entity != null)
+            {
+                session.Store(entity, id: key);
+                session.Advanced.GetMetadataFor(entity)["Raven-Expiration-Date"] = new RavenJValue(expiry);
+                session.SaveChanges();
+                logger.Debug($"Stored {key} in cache");
+            }
+            return entity;
+        }
+
+        private T Update<T>(IDocumentSession session, T entity, string key, DateTime expiry, Func<T> getFromRiotFunc)
+        {
+            logger.Debug($"Didn't find {key} in cache");
+            session.Delete(entity);
+            session.SaveChanges();
+            entity = getFromRiotFunc.Invoke();
+            if (entity != null)
+            {
+                session.Store(entity, id: key);
+                session.Advanced.GetMetadataFor(entity)["Raven-Expiration-Date"] = new RavenJValue(expiry);
+                session.SaveChanges();
+                logger.Debug($"Updated {key} in cache");
+            }
+            return entity;
+        }
 
         public T Get<T>(string key, DateTime expiry, Func<T> getFromRiotFunc)
         {
@@ -27,40 +61,22 @@ namespace LoLUniverse.Services
                 logger.Debug($"Getting {key} from cache");
                 
                 var entity = session.Load<T>(key);
-                if (entity == null)
+                
+                if (entity != null)
                 {
-                    logger.Debug($"Didn't find {key} in cache");
-                    entity = getFromRiotFunc.Invoke();
-                    if (entity != null)
+                    RavenJObject metadata = session.Advanced.GetMetadataFor(entity);
+
+                    // Get the last modified time stamp, which is known to be of type DateTime
+                    DateTime expirationDate = metadata.Value<DateTime>("Raven-Expiration-Date");
+                    if (expirationDate < DateTime.UtcNow)
                     {
-                        session.Store(entity, id: key);
-                        session.Advanced.GetMetadataFor(entity)["Raven-Expiration-Date"] = new RavenJValue(expiry);
-                        session.SaveChanges();
-                        logger.Debug($"Stored {key} in cache");
+                        entity = Update(session, entity, key, expiry, getFromRiotFunc);
                     }
                 }
-                return entity;
-            }
-        }
-
-        public T Get<T>(int id, DateTime expiry, Func<T> getFromRiotFunc)
-        {
-            using (var session = _documentStore.OpenSession())
-            {
-                logger.Debug($"Getting {typeof(T)}/{id} from cache");
-
-                var entity = session.Load<T>(id);
-                if (entity == null)
+                else
                 {
-                    logger.Debug($"Didn't find {typeof(T)}/{id} in cache");
-                    entity = getFromRiotFunc.Invoke();
-                    if (entity != null)
-                    {
-                        session.Store(entity);
-                        session.Advanced.GetMetadataFor(entity)["Raven-Expiration-Date"] = new RavenJValue(expiry);
-                        session.SaveChanges();
-                        logger.Debug($"Stored {typeof(T)}/{id} in cache");
-                    }
+                    entity = Store(session, key, expiry, getFromRiotFunc);
+                    
                 }
                 return entity;
             }
