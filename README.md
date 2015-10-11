@@ -2,6 +2,8 @@
 # LoLUniverse
 League of Legends web application utilizing [RiotApi.NET C# library](https://github.com/sdesyllas/RiotApi.NET)
 
+## [Check Live Demo here](http://devspyros.cloudapp.net)
+
 <img src="http://i58.tinypic.com/x6nbit.jpg" border="0" alt="Image and video hosting by TinyPic">
 
 <img src="http://i59.tinypic.com/35d3lox.jpg" border="0" alt="Image and video hosting by TinyPic">
