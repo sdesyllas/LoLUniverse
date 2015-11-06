@@ -26,7 +26,3 @@ In order to have this web application up and running you need to configure the f
 * [RavenDB NoSQL Database](http://ravendb.net/)
 
 <img src="http://ravendb.net/content/images/ravenMoon.png" alt="powered by RavenDB" width="85" height="85"/>
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sdesyllas/loluniverse/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
