@@ -85,8 +85,8 @@
       <HintPath>..\packages\RestSharp.105.2.2\lib\net452\RestSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RiotApi.Net.RestClient">
-      <HintPath>..\packages\RiotApi.NET.1.4.2\lib\net452\RiotApi.Net.RestClient.dll</HintPath>
+    <Reference Include="RiotApi.Net.RestClient, Version=1.4.3.39211, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RiotApi.NET.1.4.3\lib\net452\RiotApi.Net.RestClient.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
